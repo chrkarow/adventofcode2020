@@ -24,16 +24,17 @@ fun main() {
 
     val result2 = splitList(withZero)
         .map { count(it.first(), it.last(), it) }
-        .fold(1L){acc, v -> acc * v}
-    println(result2)
+        .fold(1L) { acc, v -> acc * v }
+    println(result2) // Haesslich...geht aber auch!
 
+    println(countMap(withZero)) // Extrem elegate loesung
 }
 
 fun splitList(sorted: List<Int>): List<List<Int>> {
     var i = 0
     var j = 1
     val returnList = mutableListOf<List<Int>>()
-    while (j+1 in sorted.indices) {
+    while (j + 1 in sorted.indices) {
         if (sorted[j + 1] - sorted[j] == 3) {
             returnList.add(sorted.subList(i, j + 1))
             i = j + 1
@@ -69,4 +70,25 @@ fun count(start: Int, end: Int, adapters: List<Int>): Long {
     }
 
     return a + b + c
+}
+
+fun countMap(adapters: List<Int>): Long {
+    val numbers = adapters.associateWith { 0L }.toMutableMap()
+
+    numbers[numbers.keys.first()] = 1
+    numbers.forEach {
+        if (numbers[it.key + 1] != null) {
+            numbers[it.key + 1] = numbers[it.key + 1]!! + it.value
+        }
+
+        if (numbers[it.key + 2] != null) {
+            numbers[it.key + 2] = numbers[it.key + 2]!! + it.value
+        }
+
+        if (numbers[it.key + 3] != null) {
+            numbers[it.key + 3] = numbers[it.key + 3]!! + it.value
+        }
+    }
+
+    return numbers.values.last()
 }

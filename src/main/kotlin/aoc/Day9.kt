@@ -33,6 +33,8 @@ fun getRange(number: Long, numbers: List<Long>, maxIndex: Int): Long {
             println("Sum $sum, list: $subList")
             if (sum == number) {
                 return subList.minOrNull()!! + subList.maxOrNull()!!
+            } else if(sum > number){
+                break
             }
             upperBound++
         }
